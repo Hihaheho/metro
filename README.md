@@ -1,3 +1,4 @@
-# metro
+# metro-agent
 
-A modular, type-safe framework for intelligent agents, powered by a graph-based blackboard.
+A modular, type-safe framework for intelligent agents, powered by a graph-based
+blackboard.

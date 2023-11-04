@@ -1,0 +1,21 @@
+[package]
+name = "metro-blackboard"
+description = "A graph-based blackboard"
+version = "0.0.0"
+edition = "2021"
+categories = ["data-structures"]
+keywords = ["blackboard", "graph", "ai", "intelligent agent"]
+license = "MIT OR Apache-2.0"
+readme = "../../README.md"
+repository = "https://github.com/Hihaheho/metro-agent"
+
+[features]
+default = ["derive", "serde", "btree"]
+derive = ["metro-macros"]
+serde = ["serde/derive", "uuid/serde", "metro-macros/serde"]
+btree = []
+
+[dependencies]
+serde = { version = "1", optional = true }
+uuid = { version = "1" }
+metro-macros = { version = "0.0.0", path = "../metro-macros", optional = true }

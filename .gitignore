@@ -1,0 +1,19 @@
+# ignore all but allows all directories
+*
+!*/
+
+# ignore directories
+/target
+
+# files
+!/crates/**/*.rs
+!/.github/**/*.yml
+!/.github/**/*.json
+
+# specific files
+!/README.md
+!/LICENSE.md
+
+# global allow
+!.gitignore
+!Cargo.toml

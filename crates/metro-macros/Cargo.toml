@@ -1,0 +1,22 @@
+[package]
+name = "metro-macros"
+description = "Macros for metro-agent"
+version = "0.0.0"
+edition = "2021"
+categories = []
+keywords = []
+license = "MIT OR Apache-2.0"
+readme = "../../README.md"
+repository = "https://github.com/Hihaheho/metro-agent"
+
+[lib]
+proc-macro = true
+
+[features]
+default = ["serde"]
+serde = []
+
+[dependencies]
+proc-macro2 = "1"
+quote = "1"
+syn = "2"
