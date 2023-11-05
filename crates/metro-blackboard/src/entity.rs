@@ -15,11 +15,30 @@ pub struct EntityId<T: TypeTag> {
 
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-pub struct Entity<T: EntityEnum> {
-    referred_by: Set<EntityId<T::TypeTag>>,
-    references: Set<EntityId<T::TypeTag>>,
-    relation: Option<Relation<T>>,
-    data: T,
+pub struct EntityEntry<T: EntityEnum> {
+    pub(crate) referred_by: Set<EntityId<T::TypeTag>>,
+    pub(crate) relation: Option<Relation<T>>,
+    pub data: T,
+}
+
+impl<T: EntityEnum> EntityEntry<T> {
+    pub(crate) fn new(data: T, relation: Option<Relation<T>>) -> Self {
+        Self {
+            referred_by: Default::default(),
+            relation,
+            data,
+        }
+    }
+}
+
+impl<T: EntityEnum> EntityEntry<T> {
+    pub fn referred_by(&self) -> &Set<EntityId<T::TypeTag>> {
+        &self.referred_by
+    }
+
+    pub fn relation(&self) -> Option<&Relation<T>> {
+        self.relation.as_ref()
+    }
 }
 
 #[cfg(test)]

@@ -24,13 +24,22 @@ pub trait EntityEnum {
     fn list_type_tags() -> &'static [Self::TypeTag];
 }
 
-pub trait FromEntity<T, Tag>: EntityEnum<TypeTag = Tag> {
-    fn from_entity(data: T) -> Self;
-    fn type_tag() -> Tag;
+pub trait IntoEnum<T: EntityEnum> {
+    fn into_enum(self) -> T;
 }
 
-pub trait EnumDowncast<T, Tag>: FromEntity<T, Tag> {
+pub trait FromEntity<T>: EntityEnum {
+    fn from_entity(entity: T) -> Self;
+}
+
+pub trait EnumDowncast<T>: FromEntity<T> {
     fn enum_downcast(self) -> T;
     fn enum_downcast_ref(&self) -> &T;
     fn enum_downcast_mut(&mut self) -> &mut T;
+}
+
+impl<T, Enum: FromEntity<T>> IntoEnum<Enum> for T {
+    fn into_enum(self) -> Enum {
+        Enum::from_entity(self)
+    }
 }
