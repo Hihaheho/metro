@@ -26,7 +26,7 @@ impl<Enum: EntityEnum> Commands<Enum> {
     pub fn insert<T: IntoEnum<Enum>>(&mut self, uuid: Uuid, entity: T) -> &mut Self {
         let entity = entity.into_enum();
         let id = EntityId {
-            type_tag: entity.get_type_tag(),
+            type_tag: entity.type_tag(),
             uuid,
         };
         self.commands.push(Command::Insert {
@@ -45,7 +45,7 @@ impl<Enum: EntityEnum> Commands<Enum> {
     ) -> &mut Self {
         let entity = entity.into_enum();
         let id = EntityId {
-            type_tag: entity.get_type_tag(),
+            type_tag: entity.type_tag(),
             uuid,
         };
         self.commands.push(Command::Insert {

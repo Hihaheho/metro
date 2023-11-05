@@ -1,9 +1,7 @@
-use uuid::Uuid;
-
 use crate::{
     commands::{Command, Commands},
     entity::{EntityEntry, EntityId},
-    entity_traits::{EntityEnum, FromEntity, TypeTag},
+    entity_traits::{EntityEnum, TypeTag},
     map::Map,
     relation::Relation,
 };

@@ -7,21 +7,12 @@ pub struct TypeInfo {
     pub name: &'static str,
 }
 
-pub trait EntityEnum {
-    #[cfg(not(feature = "serde"))]
-    type TypeTag: TypeTag + Copy + Clone + Eq + Ord + std::hash::Hash + std::fmt::Debug;
-    #[cfg(feature = "serde")]
-    type TypeTag: TypeTag
-        + Copy
-        + Clone
-        + Eq
-        + Ord
-        + std::hash::Hash
-        + std::fmt::Debug
-        + serde::Serialize
-        + serde::de::DeserializeOwned;
-    fn get_type_tag(&self) -> Self::TypeTag;
+pub trait EntityEnum: Sized {
+    type TypeTag: TypeTag + IdBounds;
+    type EntityId: IdBounds;
+    fn type_tag(&self) -> Self::TypeTag;
     fn list_type_tags() -> &'static [Self::TypeTag];
+    fn type_tag_of<T: IntoEnum<Self>>() -> Self::TypeTag;
 }
 
 pub trait IntoEnum<T: EntityEnum> {
@@ -43,3 +34,36 @@ impl<T, Enum: FromEntity<T>> IntoEnum<Enum> for T {
         Enum::from_entity(self)
     }
 }
+
+#[cfg(feature = "serde")]
+mod bounds {
+    pub trait IdBounds:
+        Copy
+        + Clone
+        + Eq
+        + Ord
+        + std::hash::Hash
+        + std::fmt::Debug
+        + serde::Serialize
+        + serde::de::DeserializeOwned
+    {
+    }
+    impl<T> IdBounds for T where
+        T: Copy
+            + Clone
+            + Eq
+            + Ord
+            + std::hash::Hash
+            + std::fmt::Debug
+            + serde::Serialize
+            + serde::de::DeserializeOwned
+    {
+    }
+}
+#[cfg(not(feature = "serde"))]
+mod bounds {
+    pub trait IdBounds: Copy + Clone + Eq + Ord + std::hash::Hash + std::fmt::Debug {}
+    impl<T> IdBounds for T where T: Copy + Clone + Eq + Ord + std::hash::Hash + std::fmt::Debug {}
+}
+
+use bounds::IdBounds;
