@@ -1,18 +1,15 @@
 [package]
-name = "metro-agent"
-description = "Build your modular intelligent agents"
+name = "metro-engine"
+description = "A modular, type-safe engine for intelligent agents, powered by a graph-based blackboard"
 version = "0.0.0"
 edition = "2021"
 categories = ["ai"]
-keywords = ["game", "gamedev", "agent", "blackboard", "ai"]
+keywords = ["game", "gamedev", "agent", "ai"]
 license = "MIT OR Apache-2.0"
-readme = "README.md"
+readme = "../../README.md"
 repository = "https://github.com/Hihaheho/metro"
 
-[features]
-default = ["serde"]
-serde = ["metro-blackboard/serde", "metro-macros/serde"]
-
 [dependencies]
+metro-agent = { version = "0.0.0", path = "../metro-agent" }
 metro-blackboard = { version = "0.0.0", path = "../metro-blackboard" }
 metro-macros = { version = "0.0.0", path = "../metro-macros" }

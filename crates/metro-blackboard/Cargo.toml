@@ -1,13 +1,13 @@
 [package]
 name = "metro-blackboard"
-description = "A graph-based blackboard"
+description = "A graph-based blackboard with a query engine and lock-free concurrency"
 version = "0.0.0"
 edition = "2021"
 categories = ["data-structures"]
 keywords = ["blackboard", "graph", "ai", "agent"]
 license = "MIT OR Apache-2.0"
-readme = "../../README.md"
-repository = "https://github.com/Hihaheho/metro-agent"
+readme = "README.md"
+repository = "https://github.com/Hihaheho/metro"
 
 [features]
 default = ["derive", "serde", "btree"]
