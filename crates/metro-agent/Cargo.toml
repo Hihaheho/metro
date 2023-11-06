@@ -1,6 +1,6 @@
 [package]
 name = "metro-agent"
-description = "Build your modular intelligent agents"
+description = "Build your modular intelligent agents based on a graph-structured blackboard"
 version = "0.0.0"
 edition = "2021"
 categories = ["ai"]
@@ -10,9 +10,19 @@ readme = "README.md"
 repository = "https://github.com/Hihaheho/metro"
 
 [features]
-default = ["serde"]
-serde = ["metro-blackboard/serde", "metro-macros/serde"]
+default = []
+full = ["serde", "derive"]
+serde = [
+  "dep:serde",
+  "serde/derive",
+  "metro-blackboard/serde",
+  "metro-macros/serde",
+]
+derive = ["metro-macros"]
 
 [dependencies]
 metro-blackboard = { version = "0.0.0", path = "../metro-blackboard" }
-metro-macros = { version = "0.0.0", path = "../metro-macros" }
+metro-macros = { version = "0.0.0", path = "../metro-macros", optional = true }
+
+async-trait = { workspace = true }
+serde = { version = "1", optional = true }

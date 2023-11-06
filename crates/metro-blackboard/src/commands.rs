@@ -10,6 +10,7 @@ pub struct Commands<Enum: EntityEnum> {
     commands: Vec<Command<Enum>>,
 }
 
+/// This must be implemented manually not to require `Enum: EntityEnum` bound.
 impl<Enum: EntityEnum> Default for Commands<Enum> {
     fn default() -> Self {
         Self::new()

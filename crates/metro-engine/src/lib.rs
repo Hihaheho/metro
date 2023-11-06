@@ -1,14 +1,13 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+pub use metro_agent as agent;
+pub use metro_blackboard as blackboard;
+
+pub mod prelude {
+    pub use crate::derive::*;
+    pub use metro_agent::prelude::*;
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub use crate::derive::*;
+mod derive {
+    #[cfg(feature = "derive")]
+    pub use metro_macros::*;
 }

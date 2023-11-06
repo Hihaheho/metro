@@ -8,6 +8,7 @@
 # files
 !/crates/**/*.rs
 !/crates/**/README.md
+!/examples/**/*.rs
 !/.github/**/*.yml
 !/.github/**/*.json
 

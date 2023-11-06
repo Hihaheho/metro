@@ -1,6 +1,6 @@
 [package]
 name = "metro-blackboard"
-description = "A graph-based blackboard with a query engine and lock-free concurrency"
+description = "A graph-structured blackboard and query system with lock-free concurrency"
 version = "0.0.0"
 edition = "2021"
 categories = ["data-structures"]
@@ -10,9 +10,10 @@ readme = "README.md"
 repository = "https://github.com/Hihaheho/metro"
 
 [features]
-default = ["derive", "serde", "btree"]
+default = ["btree"]
+full = ["derive", "serde"]
 derive = ["metro-macros"]
-serde = ["serde/derive", "uuid/serde", "metro-macros/serde"]
+serde = ["dep:serde", "serde/derive", "uuid/serde", "metro-macros/serde"]
 btree = []
 
 [dependencies]

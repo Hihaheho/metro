@@ -54,12 +54,14 @@ mod tests {
             Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd, Serialize, Deserialize,
         )]
         enum TestTypeTag {
+            Any,
             A,
             B,
             C,
         }
 
         impl TypeTag for TestTypeTag {
+            const ANY: Self = Self::Any;
             fn type_info(&self) -> crate::entity_traits::TypeInfo {
                 todo!()
             }

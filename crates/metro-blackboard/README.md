@@ -5,6 +5,6 @@
 [![docs.rs](https://img.shields.io/docsrs/metro-blackboard)](https://docs.rs/metro-blackboard)
 [![GitHub Repo stars](https://img.shields.io/github/stars/Hihaheho/metro?style=social)](https://github.com/Hihaheho/metro)
 
-A graph-based blackboard with a query engine and lock-free concurrency.
+A graph-structured blackboard and query system with lock-free concurrency.
 
 **Status: WIP to release the first working version 0.1.0**

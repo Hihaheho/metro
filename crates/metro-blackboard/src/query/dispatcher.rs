@@ -1,6 +1,6 @@
 use std::sync::atomic::{AtomicU32, Ordering};
 
-use crate::entity_traits::{EntityEnum, IntoEnum};
+use crate::entity_traits::{EntityEnum, FromEntity, IntoEnum};
 
 use super::dyn_query::{DynQuery, DynQueryId};
 
@@ -11,7 +11,17 @@ pub struct QueryDispatcher<Enum: EntityEnum> {
 }
 
 impl<Enum: EntityEnum> QueryDispatcher<Enum> {
-    pub fn generate_query_id<T: IntoEnum<Enum>>(&self) -> DynQueryId<Enum> {
+    pub(crate) fn new(sender: std::sync::mpsc::Sender<(DynQueryId<Enum>, DynQuery<Enum>)>) -> Self {
+        Self {
+            _phantom: std::marker::PhantomData,
+            next_id: AtomicU32::new(0),
+            sender,
+        }
+    }
+    pub(crate) fn generate_query_id<T>(&self) -> DynQueryId<Enum>
+    where
+        Enum: FromEntity<T>,
+    {
         let id = self.next_id.fetch_add(1, Ordering::Relaxed);
         DynQueryId {
             id,

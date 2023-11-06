@@ -1,5 +1,5 @@
 pub mod builder;
-mod dispatcher;
+pub mod dispatcher;
 mod dyn_query;
 mod executor;
 pub mod expression;

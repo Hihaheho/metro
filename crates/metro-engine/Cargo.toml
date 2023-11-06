@@ -1,6 +1,6 @@
 [package]
 name = "metro-engine"
-description = "A modular, type-safe engine for intelligent agents, powered by a graph-based blackboard"
+description = "An intelligent agent engine with graph-structured blackboard with type-safe query system"
 version = "0.0.0"
 edition = "2021"
 categories = ["ai"]
@@ -9,7 +9,23 @@ license = "MIT OR Apache-2.0"
 readme = "../../README.md"
 repository = "https://github.com/Hihaheho/metro"
 
+[features]
+default = ["derive", "serde"]
+serde = [
+  "dep:serde",
+  "metro-agent/serde",
+  "metro-blackboard/serde",
+  "metro-macros/serde",
+]
+derive = ["metro-macros"]
+
 [dependencies]
 metro-agent = { version = "0.0.0", path = "../metro-agent" }
 metro-blackboard = { version = "0.0.0", path = "../metro-blackboard" }
-metro-macros = { version = "0.0.0", path = "../metro-macros" }
+metro-macros = { version = "0.0.0", path = "../metro-macros", optional = true }
+
+serde = { version = "1", optional = true }
+
+[[example]]
+name = "hello_world"
+path = "../../examples/hello_world.rs"

@@ -6,5 +6,14 @@ pub mod map;
 pub mod query;
 pub mod relation;
 
-#[cfg(feature = "derive")]
-pub use metro_macros::EntityEnum;
+pub mod prelude {
+    pub use crate::derive::*;
+    pub use crate::entity_traits::*;
+}
+
+pub use crate::derive::*;
+
+mod derive {
+    #[cfg(feature = "derive")]
+    pub use metro_macros::*;
+}

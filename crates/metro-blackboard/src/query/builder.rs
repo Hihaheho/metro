@@ -11,9 +11,17 @@ pub trait Query<Enum: EntityEnum> {
     fn collect(&self, raw_result: RawResult<Enum>) -> Self::Output;
 }
 
-#[derive(Default)]
 pub struct Select<Enum, T> {
     _phantom: std::marker::PhantomData<(Enum, T)>,
+}
+
+/// This must be implemented manually not to require `Enum: EntityEnum` bound.
+impl<Enum, T> Default for Select<Enum, T> {
+    fn default() -> Self {
+        Self {
+            _phantom: std::marker::PhantomData,
+        }
+    }
 }
 
 impl<Enum: EntityEnum, T: IntoEnum<Enum>> Select<Enum, T> {

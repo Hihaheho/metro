@@ -6,7 +6,6 @@ pub struct DynQueryId<Enum: EntityEnum> {
     pub id: u32,
 }
 
-#[derive(Default)]
 pub struct DynQuery<Enum: EntityEnum> {
     _phantom: std::marker::PhantomData<Enum>,
     /// Filter by entity id
@@ -34,3 +33,20 @@ pub struct RelationalCond<Enum: EntityEnum> {
 }
 
 pub enum DynExpr {}
+
+/// These must be implemented manually not to require additional bound like `Enum: Default`.
+mod default {
+    use super::*;
+    impl<Enum: EntityEnum> Default for DynQuery<Enum> {
+        fn default() -> Self {
+            Self {
+                _phantom: Default::default(),
+                by_id: Default::default(),
+                cond: Default::default(),
+                referred_as_head: Default::default(),
+                referred_as_tail: Default::default(),
+                relational_cond: Default::default(),
+            }
+        }
+    }
+}
