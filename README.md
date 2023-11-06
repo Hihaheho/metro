@@ -28,8 +28,9 @@ If you don't need them, you can use the following internal packages directly fro
 
 ## Features
 
-- Ergonomic API with minimal boilerplate
+- Ergonomic API with minimal boilerplate.
 - Versatility across various use cases and high-level architectural designs of agents.
 - Simplified agent construction through type-safe composition of reusable agent units.
 - Type-safe blackboard featuring a graph data structure for complex data management.
-- Efficient, typed query system for optimized data retrieval
+- Efficient, typed query system for optimized data retrieval.
+- First-class support for type-safe dynamic operations, such as (de)serializing or inspection.
