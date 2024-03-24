@@ -2,7 +2,7 @@ use uuid::Uuid;
 
 use crate::{
     entity::EntityId,
-    entity_traits::{EntityEnum, FromEntity, IntoEnum},
+    entity_traits::{EntityEnum, IntoEnum, MemberMarker},
     relation::Relation,
 };
 
@@ -64,7 +64,7 @@ impl<Enum: EntityEnum> Commands<Enum> {
 
     pub fn update<T>(&mut self, id: EntityId<Enum::TypeTag>, entity: T) -> &mut Self
     where
-        Enum: FromEntity<T>,
+        Enum: MemberMarker<T>,
     {
         let entity = Enum::from_entity(entity);
         self.commands.push(Command::Update { id, entity });

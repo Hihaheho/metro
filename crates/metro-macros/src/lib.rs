@@ -47,16 +47,14 @@ pub fn derive_entity_enum(input: proc_macro::TokenStream) -> proc_macro::TokenSt
         .collect::<Vec<_>>();
     let type_tag = gen_type_tag(&input, &variants);
     let entity_enum_impl = impl_entity_enum(&input, &variants);
-    let from_entity_impls = impl_from_entity(&input, &variants);
-    let enum_downcast_impls = impl_enum_downcast(&input, &variants);
+    let member_marker_impls = impl_member_marker(&input, &variants);
     let type_tag_impl = impl_type_tag(&input, &variants);
     let from_impls = impl_from(&input, &variants);
 
     quote! {
         #type_tag
         #entity_enum_impl
-        #from_entity_impls
-        #enum_downcast_impls
+        #member_marker_impls
         #type_tag_impl
         #from_impls
     }
@@ -121,59 +119,46 @@ fn impl_entity_enum(input: &DeriveInput, variants: &[Variant]) -> proc_macro2::T
                     #(#type_tag_match_arms,)*
                 }
             }
-            fn type_tag_of<T>() -> Self::TypeTag where Self: FromEntity<T>{
-                <Self as FromEntity<T>>::type_tag()
+            fn type_tag_of<T>() -> Self::TypeTag where Self: MemberMarker<T>{
+                <Self as MemberMarker<T>>::type_tag()
             }
         }
     }
 }
 
-fn impl_from_entity(input: &DeriveInput, variants: &[Variant]) -> proc_macro2::TokenStream {
+fn impl_member_marker(input: &DeriveInput, variants: &[Variant]) -> proc_macro2::TokenStream {
     let enum_ident = &input.ident;
     let impls = variants.iter().map(|Variant { tag, ty }| {
         quote! {
-            impl FromEntity<#ty> for #enum_ident {
+            impl MemberMarker<#ty> for #enum_ident {
                 fn from_entity(entity: #ty) -> #enum_ident {
                     #enum_ident::#tag(entity)
                 }
                 fn type_tag() -> Self::TypeTag {
                     Self::TypeTag::#tag
                 }
-            }
-        }
-    });
-
-    quote! {
-        #(#impls)*
-    }
-}
-
-fn impl_enum_downcast(input: &DeriveInput, variants: &[Variant]) -> proc_macro2::TokenStream {
-    let enum_ident = &input.ident;
-    let impls = variants.iter().map(|Variant { tag, ty }| {
-        quote! {
-            impl EnumDowncast<#enum_ident> for #ty {
-                fn enum_downcast(from: #enum_ident) -> Option<Self> {
+                fn downcast(from: Self) -> Option<#ty> {
                     match from {
-                        #enum_ident::#tag(entity) => Some(entity),
+                        Self::#tag(entity) => Some(entity),
                         _ => None,
                     }
                 }
-                fn enum_downcast_ref(from: &#enum_ident) -> Option<&Self> {
+                fn downcast_ref(from: &Self) -> Option<&#ty> {
                     match from {
-                        #enum_ident::#tag(entity) => Some(entity),
+                        Self::#tag(entity) => Some(entity),
                         _ => None,
                     }
                 }
-                fn enum_downcast_mut(from: &mut #enum_ident) -> Option<&mut Self> {
+                fn downcast_mut(from: &mut Self) -> Option<&mut #ty> {
                     match from {
-                        #enum_ident::#tag(entity) => Some(entity),
+                        Self::#tag(entity) => Some(entity),
                         _ => None,
                     }
                 }
             }
         }
     });
+
     quote! {
         #(#impls)*
     }

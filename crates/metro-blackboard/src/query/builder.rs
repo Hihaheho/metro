@@ -3,12 +3,17 @@ use crate::entity_traits::{EntityEnum, IntoEnum};
 use super::{dispatcher::QueryDispatcher, raw_result::RawResult};
 
 pub trait Query<Enum: EntityEnum> {
+    /// Output type of this query
     type Output;
+    type Extractor: OutputExtractor<Enum, Output = Self::Output>;
 
     /// Build dynamic query
-    fn build(&self, dispatcher: QueryDispatcher<Enum>);
-    /// Collect results from dynamic results
-    fn collect(&self, raw_result: RawResult<Enum>) -> Self::Output;
+    fn build(&self, dispatcher: QueryDispatcher<Enum>) -> Self::Extractor;
+}
+
+pub trait OutputExtractor<Enum: EntityEnum> {
+    type Output;
+    fn extract(&self, raw_result: RawResult<Enum>) -> Self::Output;
 }
 
 pub struct Select<Enum, T> {

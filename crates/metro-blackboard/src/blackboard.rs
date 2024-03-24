@@ -1,3 +1,5 @@
+mod graph_command;
+
 use crate::{
     commands::{Command, Commands},
     entity::{EntityEntry, EntityId},
@@ -6,6 +8,14 @@ use crate::{
     relation::Relation,
 };
 
+/// An official blackboard storage
+///
+/// This struct serves as the official storage for a blackboard.
+/// It is structured such that, rather than facilities depending on this struct, it ties other functionalities together,
+/// allowing for the design and use of alternative storage solutions to meet specialized requirements.
+/// However, it should be noted that this storage is intended to be iteratively improved upon to ensure that
+/// it remains the best choice for the majority of use cases. Users are encouraged to extend or
+/// customize this storage only when necessary to accommodate unique needs.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 #[derive(Clone, Debug)]
 pub struct Blackboard<Enum: EntityEnum> {

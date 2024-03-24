@@ -5,14 +5,13 @@ pub trait TypeTag {
 
 pub struct TypeInfo {
     pub type_id: std::any::TypeId,
+
     /// The name of the tag, not the type.
     ///
     /// For example, if the enum is `Entity::Apple(TheRedFruit)`, the tag name is `Apple` not
     /// `TheRedFruit`.
     pub tag_name: &'static str,
 }
-
-pub type DefaultEntityId = uuid::Uuid;
 
 pub trait EntityEnum: Sized + 'static {
     const TYPE_TAGS: &'static [Self::TypeTag];
@@ -24,46 +23,13 @@ pub trait EntityEnum: Sized + 'static {
         Self: FromEntity<T>;
 }
 
-pub trait EntityEnumExt: EntityEnum {
-    fn downcast<T: EnumDowncast<Self>>(self) -> Option<T> {
-        T::enum_downcast(self)
-    }
-    fn downcast_ref<T: EnumDowncast<Self>>(&self) -> Option<&T> {
-        T::enum_downcast_ref(self)
-    }
-    fn downcast_mut<T: EnumDowncast<Self>>(&mut self) -> Option<&mut T> {
-        T::enum_downcast_mut(self)
-    }
-}
-
-pub trait EnumDowncast<Enum: EntityEnum>: Sized {
-    fn enum_downcast(from: Enum) -> Option<Self>;
-    fn enum_downcast_ref(from: &Enum) -> Option<&Self>;
-    fn enum_downcast_mut(from: &mut Enum) -> Option<&mut Self>;
-}
-
-/// EnumEntity itself can be used as like an entity.
-impl<Enum: EntityEnum> EnumDowncast<Enum> for Enum {
-    fn enum_downcast(from: Enum) -> Option<Self> {
-        Some(from)
-    }
-    fn enum_downcast_ref(from: &Enum) -> Option<&Self> {
-        Some(from)
-    }
-    fn enum_downcast_mut(from: &mut Enum) -> Option<&mut Self> {
-        Some(from)
-    }
-}
-
-impl<T: EntityEnum> EntityEnumExt for T {}
-
-pub trait IntoEnum<T: EntityEnum> {
+pub trait IntoEnum<T> {
     fn into_enum(self) -> T;
 }
 
+// TODO: More nice name?
 pub trait FromEntity<T>: EntityEnum {
     fn from_entity(entity: T) -> Self;
-    fn type_tag() -> Self::TypeTag;
 }
 
 impl<T, Enum: FromEntity<T>> IntoEnum<Enum> for T {
@@ -76,9 +42,6 @@ impl<T, Enum: FromEntity<T>> IntoEnum<Enum> for T {
 impl<T: EntityEnum> FromEntity<T> for T {
     fn from_entity(entity: T) -> Self {
         entity
-    }
-    fn type_tag() -> Self::TypeTag {
-        Self::TypeTag::ANY
     }
 }
 

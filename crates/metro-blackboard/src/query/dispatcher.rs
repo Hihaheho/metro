@@ -1,6 +1,6 @@
 use std::sync::atomic::{AtomicU32, Ordering};
 
-use crate::entity_traits::{EntityEnum, FromEntity, IntoEnum};
+use crate::entity_traits::{EntityEnum, MemberMarker};
 
 use super::dyn_query::{DynQuery, DynQueryId};
 
@@ -20,7 +20,7 @@ impl<Enum: EntityEnum> QueryDispatcher<Enum> {
     }
     pub(crate) fn generate_query_id<T>(&self) -> DynQueryId<Enum>
     where
-        Enum: FromEntity<T>,
+        Enum: MemberMarker<T>,
     {
         let id = self.next_id.fetch_add(1, Ordering::Relaxed);
         DynQueryId {
