@@ -6,7 +6,6 @@ use crate::surface::AgentSurface;
 
 use self::runtime::RuntimeHandle;
 
-#[async_trait::async_trait]
 /// The interface for an agent unit.
 ///
 /// The type of this unit must be included in the EnumEntity to be registered in a blackboard.

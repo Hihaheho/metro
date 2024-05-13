@@ -24,5 +24,4 @@ derive = ["metro-macros"]
 metro-blackboard = { version = "0.0.0", path = "../metro-blackboard" }
 metro-macros = { version = "0.0.0", path = "../metro-macros", optional = true }
 
-async-trait = { workspace = true }
 serde = { version = "1", optional = true }

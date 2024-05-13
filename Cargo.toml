@@ -3,4 +3,3 @@ resolver = "2"
 members = ["crates/*"]
 
 [workspace.dependencies]
-async-trait = { version = "*" }
